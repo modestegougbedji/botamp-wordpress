@@ -1,31 +1,31 @@
-/**
- * All of the code for your admin-facing JavaScript source
- * should reside in this file.
- *
- * Note: It has been assumed you will write jQuery code here, so the
- * $ function reference has been prepared for usage within the scope
- * of this function.
- *
- * This enables you to define handlers, for when the DOM is ready:
- *
- * $(function() {
- *
- * });
- *
- * When the window is loaded:
- *
- * $( window ).load(function() {
- *
- * });
- *
- * ...and/or other possibilities.
- *
- * Ideally, it is not considered best practise to attach more than a
- * single DOM-ready or window-load handler for a particular page.
- * Although scripts in the WordPress core, Plugins and Themes may be
- * practising this, we should strive to set a better example in our own work.
- */
 (function( $ ) {
 	'use strict';
-
-})( jQuery );
+	$(document).ready(function () {
+		function get_post_type_fields() {
+			$('.post-type-validate').change(function () {
+				if ($('.post-type-validate:checked').length) {
+					$(".botamp-post-type").each(function() {
+						var current_post_type = $(".botamp-get-list-post-type").val();
+						current_post_type += this.value + ",";
+						$(".botamp-get-list-post-type").val(current_post_type);
+			    	});
+			    	$('.botamp-all-fields').each(function() {
+				       	var select_parent = $(this).parent();
+				       	var current_field = select_parent.find(".botamp-get-list-fields").val();
+						if (!this.value) {
+							current_field += "post_thumbnail_url,";
+						}else{
+							current_field += this.value + ",";
+						}
+				       	select_parent.find(".botamp-get-list-fields").val(current_field);
+				       	$(".botamp-show-user-fields").text($(".botamp-get-list-fields").val());
+				    });  
+				}
+			}).change();
+		}
+		$(".botamp-post-type").change(function () {
+		    $(".botamp-display-checkbox").html('</br><input class="post-type-validate" type="checkbox"/>');  
+			get_post_type_fields();
+		}).change();
+	});
+})(jQuery);

@@ -206,17 +206,14 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	public function post_type_cb() {
-		$current_post_type = $this->get_option( 'post_type' );
-
-		$html = '<select name = "' . $this->option( 'post_type' ) . '" class = "regular-list" >';
-		foreach ( get_post_types( '', 'objects' ) as $post_type ) {
-			if ( $current_post_type === $post_type->name ) {
-				$html .= "<option value = '{$post_type->name}' selected='true'>{$post_type->label} </option>";
-			} else {
-				$html .= "<option value = '{$post_type->name}'> {$post_type->label} </option>";
-			}
+		$all_post_type = explode(",", substr(trim($this->get_option( 'post_type' )), 0, -1));
+		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value=" " />';
+		$html .= '<select class="botamp-post-type regular-list" >';
+		foreach ( get_post_types( '', 'objects' ) as $post_type) {
+			$html .= "<option value='{$post_type->name}' > {$post_type->label} </option>";
 		}
 		$html .= '</select>';
+		$html .= '<div class="botamp-display-checkbox"> </div>';
 
 		echo $html;
 	}
@@ -240,21 +237,14 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	private function print_field_select( $option, $fields = [] ) {
-		$option_value = $this->get_option( $option );
-
+		$all_fields = explode(",", substr(trim($this->get_option( $option )), 0, -1));
 		$fields = empty( $fields ) ? $this->fields : $fields;
-
-		$html = '<select name = "' . $this->option( $option ) . '" class = "regular-list" >';
+		$html = '<input class="botamp-get-list-fields" type="hidden" name="' . $this->option($option) . '" value=" " />';
+		$html .= '<select class="botamp-all-fields regular-list botamp-all-fields" >';
 		foreach ( $fields as $field ) {
-			if ( $option_value === $field ) {
-				$html .= "<option value = '$field' selected='true'>"
-				. $this->field_name( $field )
-				. '</option>';
-			} else {
 				$html .= "<option value = '$field'>"
 				. $this->field_name( $field )
 				. '</option>';
-			}
 		}
 		return $html;
 	}
