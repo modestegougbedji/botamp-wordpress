@@ -206,7 +206,6 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	public function post_type_cb() {
-		$all_post_type = explode(",", substr(trim($this->get_option( 'post_type' )), 0, -1));
 		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value=" " />';
 		$html .= '<select class="botamp-post-type regular-list" >';
 		foreach ( get_post_types( '', 'objects' ) as $post_type) {
@@ -237,7 +236,6 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	private function print_field_select( $option, $fields = [] ) {
-		$all_fields = explode(",", substr(trim($this->get_option( $option )), 0, -1));
 		$fields = empty( $fields ) ? $this->fields : $fields;
 		$html = '<input class="botamp-get-list-fields" type="hidden" name="' . $this->option($option) . '" value=" " />';
 		$html .= '<select class="botamp-all-fields regular-list botamp-all-fields" >';
