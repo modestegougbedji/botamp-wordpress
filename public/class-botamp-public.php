@@ -27,7 +27,7 @@ class Botamp_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/botamp-public.js', array( 'jquery' ), $this->version, false );
 	}
 	public function create_or_update_entity( $post_id ) {
-		if ( in_array(get_post_type( $post_id ), $this->get_list_post_type()) && get_post_status( $post_id ) === 'publish' ) {
+		if ( in_array( get_post_type( $post_id ), $this->get_list_post_type() ) && get_post_status( $post_id ) === 'publish' ) {
 			$params = $this->get_fields_values( $post_id );
 			foreach ( [ 'description', 'url', 'title' ] as $field ) {
 				if ( ! isset( $params[ $field ] ) || empty( $params[ $field ] ) || false == $params[ $field ] ) {
@@ -58,7 +58,7 @@ class Botamp_Public {
 		}
 	}
 	public function delete_entity( $post_id ) {
-		if ( in_array(get_post_type( $post_id ), $this->get_list_post_type())
+		if ( in_array( get_post_type( $post_id ), $this->get_list_post_type() )
 		  	&& ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
 			try {
 				$this->botamp->entities->delete( $entity_id );
@@ -88,15 +88,15 @@ class Botamp_Public {
 	}
 
 	private function get_fields_values( $post_id ) {
-		$is_position_post_type = $this->get_post_type_position($this->get_list_post_type(), get_post_type( $post_id ));
+		$is_position_post_type = $this->get_post_type_position( $this->get_list_post_type(), get_post_type( $post_id ) );
 		$post = get_post( $post_id, ARRAY_A );
 		$values = [ 'entity_type' => 'article' ];
 		foreach ( [ 'description', 'url', 'image_url', 'title' ] as $field ) {
-				if ($is_position_post_type !== null) {
-					$option =  $this->get_entity_fields($field)[$is_position_post_type];
-				}else{
-					$option = '';
-				}
+			if ( $is_position_post_type !== null ) {
+				$option =  $this->get_entity_fields( $field )[ $is_position_post_type ];
+			} else {
+				$option = '';
+			}
 			switch ( $option ) {
 
 				case 'post_title':
@@ -123,19 +123,19 @@ class Botamp_Public {
 		}
 		return $values;
 	}
-	private function get_list_post_type(){
-		return explode(",", substr(trim($this->get_option( 'post_type' )), 0, -1));
+	private function get_list_post_type() {
+		return explode( ",", substr( trim( $this->get_option( 'post_type' ) ) , 0, -1 ) );
 	}
-	private function get_entity_fields($field){
-		return explode(",", substr(trim($this->get_option( 'entity_' . $field )), 0, -1));
+	private function get_entity_fields( $field ) {
+		return explode( ",", substr( trim( $this->get_option( 'entity_' . $field ) ) , 0, -1) );
 	}
-	private function get_post_type_position($array, $value){
-		while ($item_post_type = current($array)) {
-		    if ($item_post_type == $value) {
-		    	$is_key = key($array);
-		    }
-		    next($array);
+	private function get_post_type_position( $array, $value ) {
+		while ( $item_post_type = current( $array ) ) {
+			if ( $item_post_type == $value ) {
+				$is_key = key( $array );
+			}
+			next( $array );
 		}
-		return $is_key;
+	return $is_key;
 	}
 }
