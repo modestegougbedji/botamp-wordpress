@@ -19,7 +19,7 @@
 				       	var select_parent = $( this ).parent();
 				       	var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
 				       	if (is_post_type_verified === false) {
-				       		if ( !this.value ) {
+				       		if ( ! this.value ) {
 								current_field += "post_thumbnail_url,";
 							} else {
 								current_field += this.value + ",";
@@ -31,8 +31,8 @@
 				}
 			}).change();
 		}
-		$(".botamp-post-type").change(function () {
-		    $( ".botamp-display-checkbox" ).html( '</br><input class="post-type-validate" type="checkbox"/>' );  
+		$( ".botamp-post-type" ).change( function () {
+		    $( ".botamp-display-checkbox" ).html( '</br><input class="post-type-validate" type="checkbox"/>' );
 			get_post_type_fields();
 		}).change();
 	});
