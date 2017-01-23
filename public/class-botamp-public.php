@@ -92,7 +92,7 @@ class Botamp_Public {
 		$post = get_post( $post_id, ARRAY_A );
 		$values = [ 'entity_type' => 'article' ];
 		foreach ( [ 'description', 'url', 'image_url', 'title' ] as $field ) {
-			if ( $is_position_post_type != null ) {
+			if ( !empty( $is_position_post_type ) ) {
 				$option = $this->get_entity_fields( $field )[ $is_position_post_type ];
 			} else {
 				$option = '';
@@ -127,7 +127,7 @@ class Botamp_Public {
 		return explode( ',', substr( trim( $this->get_option( 'post_type' ) ) , 0, -1 ) );
 	}
 	private function get_entity_fields( $field ) {
-		return explode( ',', substr( trim( $this->get_option( 'entity_' . $field ) ) , 0, -1) );
+		return explode( ',', substr( trim( $this->get_option( 'entity_' . $field ) ) , 0, -1 ) );
 	}
 	private function get_post_type_position( $array, $value ) {
 		while ( $item_post_type = current( $array ) ) {
