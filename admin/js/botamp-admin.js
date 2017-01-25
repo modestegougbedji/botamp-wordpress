@@ -36,8 +36,8 @@
 				if ( current_post_type.search( this.value ) != -1 ) {
 					$( ".post-type-validate" ).attr( 'checked' , true );
 					is_post_type_verified = true;
-					if ( current_post_type.replace(/,$/, '').split( "," ).indexOf( this.value ) != -1 ) {
-						is_post_type_position = current_post_type.replace(/,$/, '').split( "," ).indexOf( this.value );
+					if ( current_post_type.replace( /,$/, '' ).split( "," ).indexOf( this.value ) != -1 ) {
+						is_post_type_position = current_post_type.replace( /,$/, '' ).split( "," ).indexOf( this.value );
 					}
 				}
 			});
@@ -45,9 +45,9 @@
 		       	var select_parent = $( this ).parent();
 		       	var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
 		       	if ( is_post_type_verified === true ) {
-		       		var val_selected = current_field.replace(/,$/, '').split( "," )[ is_post_type_position ];
+		       		var val_selected = current_field.replace( /,$/, '' ).split( "," )[ is_post_type_position ];
 		       		select_parent.find( '.botamp-all-fields option[value=' + val_selected + ']' ).attr( "selected","selected" );
-		       	}else{
+		       	} else {
 		       		select_parent.find( '.botamp-all-fields option' ).removeAttr( "selected" );
 		       	}
 		    });
@@ -60,10 +60,10 @@
 						var current_post_type = $( ".botamp-get-list-post-type" ).val();
 						if ( current_post_type.search( this.value ) != -1 ) {
 							is_post_type_verified = true;
-							if ( current_post_type.replace(/,$/, '').split( "," ).indexOf( this.value ) != -1 ) {
-								is_post_type_position = current_post_type.replace(/,$/, '').split( "," ).indexOf( this.value );
+							if ( current_post_type.replace( /,$/, '' ).split( "," ).indexOf( this.value ) != -1 ) {
+								is_post_type_position = current_post_type.replace( /,$/, '' ).split( "," ).indexOf( this.value );
 							}
-							current_post_type = current_post_type.replace( this.value+',','' );
+							current_post_type = current_post_type.replace( this.value + ',','' );
 							$( ".botamp-get-list-post-type" ).val( current_post_type );
 						}
 					});
@@ -71,8 +71,8 @@
 						var select_parent = $( this ).parent();
 						var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
 				       	if ( is_post_type_verified === true ) {
-				       		var val_selected = current_field.replace(/,$/, '').split( "," )[ is_post_type_position ];
-				       		current_field = current_field.replace( val_selected+',','' );
+				       		var val_selected = current_field.replace( /,$/, '' ).split( "," )[ is_post_type_position ];
+				       		current_field = current_field.replace( val_selected + ',','' );
 				       		select_parent.find( ".botamp-get-list-fields" ).val( current_field );
 				       		select_parent.find( '.botamp-all-fields option' ).removeAttr( "selected" );
 				       	}
