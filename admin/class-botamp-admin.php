@@ -206,13 +206,14 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	public function post_type_cb() {
-		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value=" " />';
+		$post_type = $this->get_option( 'post_type' );
+		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value=" '. $post_type . ' " />';
 		$html .= '<select class="botamp-post-type regular-list" >';
 		foreach ( get_post_types( '', 'objects' ) as $post_type ) {
 			$html .= "<option value='{$post_type->name}' > {$post_type->label} </option>";
 		}
 		$html .= '</select>';
-		$html .= '<div class="botamp-display-checkbox"> </div>';
+		$html .= '<div class="botamp-display-checkbox"> </br><input class="post-type-validate" type="checkbox" /> <label>Add this post type and fields</label></div>';
 
 		echo $html;
 	}
@@ -236,8 +237,9 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	private function print_field_select( $option, $fields = [] ) {
+		$retrive_field = $this->get_option( $option );
 		$fields = empty( $fields ) ? $this->fields : $fields;
-		$html = '<input class="botamp-get-list-fields" type="hidden" name="' . $this->option( $option ) . '" value=" " />';
+		$html = '<input class="botamp-get-list-fields" type="hidden" name="' . $this->option( $option ) . '" value=" ' . $retrive_field . ' " />';
 		$html .= '<select class="botamp-all-fields regular-list botamp-all-fields" >';
 		foreach ( $fields as $field ) {
 				$html .= "<option value = '$field'>"
