@@ -207,7 +207,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 
 	public function post_type_cb() {
 		$post_type = $this->get_option( 'post_type' );
-		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value="'. $post_type . '" />';
+		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value="' . $post_type . '" />';
 		$html .= '<select class="botamp-post-type regular-list" >';
 		foreach ( get_post_types( '', 'objects' ) as $post_type ) {
 			$html .= "<option value='{$post_type->name}' > {$post_type->label} </option>";
