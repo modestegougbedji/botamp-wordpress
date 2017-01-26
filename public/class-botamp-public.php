@@ -92,7 +92,7 @@ class Botamp_Public {
 		$post = get_post( $post_id, ARRAY_A );
 		$values = [ 'entity_type' => 'article' ];
 		foreach ( [ 'description', 'url', 'image_url', 'title' ] as $field ) {
-			if ( ! empty( $is_position_post_type ) ) {
+			if ( isset ( $is_position_post_type ) ) {
 				$option = $this->get_entity_fields( $field )[ $is_position_post_type ];
 			} else {
 				$option = '';

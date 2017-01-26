@@ -7,6 +7,7 @@
 					var is_post_type_verified = false;
 					$( ".botamp-post-type" ).each( function() {
 						var current_post_type = $( ".botamp-get-list-post-type" ).val();
+						current_post_type = current_post_type.replace( / /g, '' );
 						if ( current_post_type.search( this.value ) === -1 ) {
 							current_post_type += this.value + ",";
 						} else {
@@ -17,6 +18,7 @@
 			    	$( '.botamp-all-fields' ).each( function() {
 				       	var select_parent = $( this ).parent();
 				       	var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
+				       	current_field = current_field.replace( / /g, '' );
 				       	if ( is_post_type_verified === false ) {
 				       		if ( ! this.value ) {
 								current_field += "post_thumbnail_url,";
@@ -33,6 +35,7 @@
 			var is_post_type_verified = false, is_post_type_position = 0;
 			$( ".botamp-post-type" ).each( function() {
 				var current_post_type = $( ".botamp-get-list-post-type" ).val();
+				current_post_type = current_post_type.replace( / /g, '' );
 				if ( current_post_type.search( this.value ) != -1 ) {
 					$( ".post-type-validate" ).attr( 'checked' , true );
 					is_post_type_verified = true;
@@ -44,6 +47,7 @@
 			$( '.botamp-all-fields' ).each( function() {
 		       	var select_parent = $( this ).parent();
 		       	var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
+		       	current_field = current_field.replace( / /g, '' );
 		       	if ( is_post_type_verified === true ) {
 		       		var val_selected = current_field.replace( /,$/, '' ).split( "," )[ is_post_type_position ];
 		       		select_parent.find( '.botamp-all-fields option[value=' + val_selected + ']' ).attr( "selected","selected" );
@@ -58,6 +62,7 @@
 					var is_post_type_verified = false, is_post_type_position = 0;
 					$( ".botamp-post-type" ).each( function() {
 						var current_post_type = $( ".botamp-get-list-post-type" ).val();
+						current_post_type = current_post_type.replace( / /g, '' );
 						if ( current_post_type.search( this.value ) != -1 ) {
 							is_post_type_verified = true;
 							if ( current_post_type.replace( /,$/, '' ).split( "," ).indexOf( this.value ) != -1 ) {
@@ -70,6 +75,7 @@
 					$( '.botamp-all-fields' ).each( function() {
 						var select_parent = $( this ).parent();
 						var current_field = select_parent.find( ".botamp-get-list-fields" ).val();
+						current_field = current_field.replace( / /g, '' );
 				       	if ( is_post_type_verified === true ) {
 				       		var val_selected = current_field.replace( /,$/, '' ).split( "," )[ is_post_type_position ];
 				       		current_field = current_field.replace( val_selected + ',','' );
@@ -78,7 +84,6 @@
 				       	}
 				    });
 				}
-
 			}).change();
 		}
 		$( ".botamp-post-type" ).change( function () {
