@@ -139,12 +139,11 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 	public function entity_fields() {
 		$html = '<div class="botamp-content-mapping">';
-		foreach ( get_post_types( array("public" => true), 'objects' ) as $post_type ) {
-			$option_value = $this->get_option( 'post_type' )[$post_type->name];
-	        $html .= '<table class="form-table" id="botamp-form-table-'.$post_type->name.'"> <tr valign="top">
-	        	<th scope="row"><label for="'.$this->option( "post_type" ).'['.$post_type->name.'][description]">Description</label> </th>
-	        	<td>
-	        	<select name="'.$this->option( 'post_type' ).'['.$post_type->name.'][description]" class = "regular-list">';
+		foreach ( get_post_types( array( 'public' => true ), 'objects' ) as $post_type ) {
+			$option_value = $this->get_option( 'post_type' )[ $post_type->name ];
+	        $html .= '<table class="form-table" id="botamp-form-table-' . $post_type->name . '"> <tr valign="top">
+	        	<th scope="row"><label for="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]">Description</label> </th>
+	        	<td> <select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]" class = "regular-list">';
     		foreach ( $this->fields as $field ) {
 				if ( $option_value['description'] === $field ) {
 					$html .= "<option value = '$field' selected='true'>"
@@ -157,12 +156,12 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 				}
 			}
 		$html .= '</select>
-				</td>
+			</td>
 	        </tr>
 	        <tr valign="top">
 	        	<th scope="row"> <label for="'.$this->option( 'post_type' ) . '[' . $post_type->name . '][image_url]">Image URL</label> </th>
-	        	<td>
-	        	<select name="' . $this->option( "post_type" ) . '[' . $post_type->name . '][image_url]" class = "regular-list">';
+	    <td>
+	    <select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][image_url]" class = "regular-list">';
     		foreach ( [ '', 'post_thumbnail_url' ] as $field ) {
 				if ( $option_value['image_url'] === $field ) {
 					$html .= "<option value = '$field' selected='true'>"
@@ -175,7 +174,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 				}
 			}
 		$html .= '</select>
-	        	</td>
+	    </td>
 	        </tr>
 	        <tr valign="top" >
 	        	<th scope="row"><h3>' . $post_type->label . '</h3></th>
@@ -185,7 +184,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	        	<th scope="row"> <label for="' . $this->option( 'order_notifications' ) . '">Sync this post type</label> </th>
 	        	<td>
 	        	<input type="checkbox" name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][valid]" value="enabled" ' .checked( 'enabled', $option_value['valid'], false ) . '/>
-	        	</td>
+	    </td>
 	        </tr>
 	        <tr valign="top">
 	        	<th scope="row"> <label for="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][title]">Title</label> </th>
@@ -193,9 +192,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	        	<select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][title]" class = "regular-list">';
     		foreach ( $this->fields as $field ) {
 				if ( $option_value['title'] === $field ) {
-					$html .= "<option value = '$field' selected='true'>"
-					. $this->field_name( $field )
-					. '</option>';
+					$html .= "<option value = '$field' selected='true'>" . $this->field_name( $field ) . '</option>';
 				} else {
 					$html .= "<option value = '$field'>"
 					. $this->field_name( $field )
@@ -205,15 +202,13 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 		$html .= '</select>
 	        	</td>
 	        </tr>
-	        <tr valign="top">
+	    <tr valign="top">
 	        	<th scope="row"> <label for="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][url]">URL</label> </th>
 	        	<td>
 	        	<select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][url]" class = "regular-list">';
     		foreach ( $this->fields as $field ) {
 				if ( $option_value['url'] === $field ) {
-					$html .= "<option value = '$field' selected='true'>"
-					. $this->field_name( $field )
-					. '</option>';
+					$html .= "<option value = '$field' selected='true'>" . $this->field_name( $field ) . '</option>';
 				} else {
 					$html .= "<option value = '$field'>"
 					. $this->field_name( $field )
@@ -223,7 +218,6 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 		$html .= '</select>
 	        	</td>
 	        </tr></table>';
-
 		}
 		$html .= '</div>';
 		echo $html;
