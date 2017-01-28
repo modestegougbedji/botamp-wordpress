@@ -23,8 +23,8 @@
 	<h2> <?php echo esc_html( get_admin_page_title() ); ?> </h2>
 	<form action="options.php" method="post">
 	<?php
-		$woocommerce_admin = new Botamp_Woocommerce_Admin($plugin_name, $version);
-		settings_fields( $this->plugin_name);
+		$woocommerce_admin = new Botamp_Woocommerce_Admin( $plugin_name, $version );
+		settings_fields( $this->plugin_name );
 		do_settings_sections( $this->plugin_name );
 		?>
 		<h2>General</h2>

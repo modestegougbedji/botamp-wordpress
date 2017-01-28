@@ -28,7 +28,7 @@ class Botamp_Public {
 	}
 
 	public function create_or_update_entity( $post_id ) {
-		if ( $this->verified_this_post_type($post_id) && get_post_status( $post_id ) === 'publish' ) {
+		if ( $this->verified_this_post_type( $post_id ) && get_post_status( $post_id ) === 'publish' ) {
 
 			$params = $this->get_fields_values( $post_id );
 
@@ -65,7 +65,7 @@ class Botamp_Public {
 	}
 
 	public function delete_entity( $post_id ) {
-		if ( $this->verified_this_post_type($post_id) && ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
+		if ( $this->verified_this_post_type( $post_id ) && ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
 			try {
 				$this->botamp->entities->delete( $entity_id );
 				$this->set_auth_status( 'ok' );
@@ -97,15 +97,15 @@ class Botamp_Public {
 		$post = get_post( $post_id, ARRAY_A );
 		$values = [ 'entity_type' => 'article' ];
 		$is_post_type = false;
-		foreach ($this->get_list_post_type_validation() as $post_type => $entity_fields) {
-			if ($post_type == get_post_type( $post_id )) {
+		foreach ( $this->get_list_post_type_validation() as $post_type => $entity_fields ) {
+			if ( $post_type == get_post_type( $post_id ) ) {
 				$is_post_type = true;
 				$is_entity_fields = $entity_fields;
 			}
 		}
 		foreach ( [ 'description', 'url', 'image_url', 'title' ] as $field ) {
 			if ( $is_post_type ) {
-				$option = $is_entity_fields[$field];
+				$option = $is_entity_fields[ $field ];
 			} else {
 				$option = '';
 			}
@@ -137,18 +137,18 @@ class Botamp_Public {
 	private function get_list_post_type_validation() {
 		$list_post_type_valid = [];
 		$list_entity_field_valid = [];
-		foreach ($this->get_option( 'post_type' ) as $post_type => $entity_fields) {
-			if ($entity_fields["valid"] == "enabled") {
-				array_push($list_post_type_valid, $post_type);
-				array_push($list_entity_field_valid, $entity_fields);
+		foreach ( $this->get_option( 'post_type' ) as $post_type => $entity_fields ) {
+			if ( $entity_fields[ "valid" ] == "enabled" ) {
+				array_push( $list_post_type_valid, $post_type );
+				array_push( $list_entity_field_valid, $entity_fields );
 			}
 		}
-		$post_type_fields_valid = array_combine($list_post_type_valid, $list_entity_field_valid);
+		$post_type_fields_valid = array_combine( $list_post_type_valid, $list_entity_field_valid );
 		return $post_type_fields_valid;
 	}
-	private function verified_this_post_type($post_id) {
+	private function verified_this_post_type( $post_id ) {
 		$is_post_type = false;
-		foreach ($this->get_list_post_type_validation() as $post_type => $entity_fields) {
+		foreach ( $this->get_list_post_type_validation() as $post_type => $entity_fields ) {
 			if ( $post_type == get_post_type( $post_id ) ) {
 				$is_post_type = true;
 			}
