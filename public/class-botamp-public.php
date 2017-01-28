@@ -26,14 +26,20 @@ class Botamp_Public {
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/botamp-public.js', array( 'jquery' ), $this->version, false );
 	}
+
 	public function create_or_update_entity( $post_id ) {
-		if ( in_array( get_post_type( $post_id ), $this->get_list_post_type() ) && get_post_status( $post_id ) === 'publish' ) {
+		if ( $this->verified_this_post_type($post_id) && get_post_status( $post_id ) === 'publish' ) {
+
 			$params = $this->get_fields_values( $post_id );
+
 			foreach ( [ 'description', 'url', 'title' ] as $field ) {
-				if ( ! isset( $params[ $field ] ) || empty( $params[ $field ] ) || false == $params[ $field ] ) {
+				if ( ! isset( $params[ $field ] )
+					|| empty( $params[ $field ] )
+					|| false == $params[ $field ] ) {
 						return false;
 				}
 			}
+
 			if ( ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
 				try {
 					$response = $this->botamp->entities->get( $entity_id );
@@ -57,9 +63,9 @@ class Botamp_Public {
 			return true;
 		}
 	}
+
 	public function delete_entity( $post_id ) {
-		if ( in_array( get_post_type( $post_id ), $this->get_list_post_type() )
-		  	&& ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
+		if ( $this->verified_this_post_type($post_id) && ! empty( $entity_id = get_post_meta( $post_id, $this->option( 'entity_id' ), true ) ) ) {
 			try {
 				$this->botamp->entities->delete( $entity_id );
 				$this->set_auth_status( 'ok' );
@@ -88,17 +94,22 @@ class Botamp_Public {
 	}
 
 	private function get_fields_values( $post_id ) {
-		$is_position_post_type = $this->get_post_type_position( $this->get_list_post_type(), get_post_type( $post_id ) );
 		$post = get_post( $post_id, ARRAY_A );
 		$values = [ 'entity_type' => 'article' ];
+		$is_post_type = false;
+		foreach ($this->get_list_post_type_validation() as $post_type => $entity_fields) {
+			if ($post_type == get_post_type( $post_id )) {
+				$is_post_type = true;
+				$is_entity_fields = $entity_fields;
+			}
+		}
 		foreach ( [ 'description', 'url', 'image_url', 'title' ] as $field ) {
-			if ( isset( $is_position_post_type ) ) {
-				$option = $this->get_entity_fields( $field )[ $is_position_post_type ];
+			if ( $is_post_type ) {
+				$option = $is_entity_fields[$field];
 			} else {
 				$option = '';
 			}
 			switch ( $option ) {
-
 				case 'post_title':
 					$values[ $field ] = apply_filters( 'the_title', $post['post_title'], $post_id );
 					break;
@@ -123,19 +134,25 @@ class Botamp_Public {
 		}
 		return $values;
 	}
-	private function get_list_post_type() {
-		return explode( ',', substr( trim( $this->get_option( 'post_type' ) ) , 0, -1 ) );
-	}
-	private function get_entity_fields( $field ) {
-		return explode( ',', substr( trim( $this->get_option( 'entity_' . $field ) ) , 0, -1 ) );
-	}
-	private function get_post_type_position( $array, $value ) {
-		while ( $item_post_type = current( $array ) ) {
-			if ( $item_post_type == $value ) {
-				$is_key = key( $array );
+	private function get_list_post_type_validation() {
+		$list_post_type_valid = [];
+		$list_entity_field_valid = [];
+		foreach ($this->get_option( 'post_type' ) as $post_type => $entity_fields) {
+			if ($entity_fields["valid"] == "enabled") {
+				array_push($list_post_type_valid, $post_type);
+				array_push($list_entity_field_valid, $entity_fields);
 			}
-			next( $array );
 		}
-		return $is_key;
+		$post_type_fields_valid = array_combine($list_post_type_valid, $list_entity_field_valid);
+		return $post_type_fields_valid;
+	}
+	private function verified_this_post_type($post_id) {
+		$is_post_type = false;
+		foreach ($this->get_list_post_type_validation() as $post_type => $entity_fields) {
+			if ( $post_type == get_post_type( $post_id ) ) {
+				$is_post_type = true;
+			}
+		}
+		return $is_post_type;
 	}
 }

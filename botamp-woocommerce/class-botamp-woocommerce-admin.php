@@ -16,28 +16,15 @@ class Botamp_Woocommerce_Admin {
 	}
 
 	public function register_settings() {
-		add_settings_field(
-			$this->option( 'order_notifications' ),
-			__( 'Order notifications', 'botamp' ),
-			array( $this, 'order_notifications_cb' ),
-			$this->plugin_name,
-			$this->option( 'general' ),
-			array( 'label_for' => $this->option( 'order_notifications' ) )
-		);
-
 		register_setting( $this->plugin_name, $this->option( 'order_notifications' ) );
 	}
 
-
 	public function order_notifications_cb() {
 		$current_state = $this->get_option( 'order_notifications' );
-
 		$html = '<input type="checkbox" name="' . $this->option( 'order_notifications' ) . '" value="enabled" ' .
 		checked( 'enabled', $current_state, false ) . '/>';
 			$html .= '<label for="' . $this->option( 'order_notifications' ) . '"> Send order notifications to users </label>';
-
 		echo $html;
 
 	}
 }
-

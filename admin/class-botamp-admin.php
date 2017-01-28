@@ -108,84 +108,8 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	public function register_settings() {
-		// Add a General section
-		add_settings_section(
-			$this->option( 'general' ),
-			__( 'General', 'botamp' ),
-			array( $this, 'general_cb' ),
-			$this->plugin_name
-		);
-
-		// Add a Entity section
-		add_settings_section(
-			$this->option( 'entity' ),
-			__( 'Content Mapping', 'botamp' ),
-			array( $this, 'entity_cb' ),
-			$this->plugin_name
-		);
-
-		// Add API key field
-		add_settings_field(
-			$this->option( 'api_key' ),
-			__( 'API key', 'botamp' ),
-			array( $this, 'api_key_cb' ),
-			$this->plugin_name,
-			$this->option( 'general' ),
-			array( 'label_for' => $this->option( 'api_key' ) )
-		);
-
-		// Add Post type field
-		add_settings_field(
-			$this->option( 'post_type' ),
-			__( 'Post type', 'botamp' ),
-			array( $this, 'post_type_cb' ),
-			$this->plugin_name,
-			$this->option( 'general' ),
-			array( 'label_for' => $this->option( 'post_type' ) )
-		);
-
-		add_settings_field(
-			$this->option( 'entity_description' ),
-			__( 'Description', 'botamp' ),
-			array( $this, 'entity_description_cb' ),
-			$this->plugin_name,
-			$this->option( 'entity' ),
-			array( 'label_for' => $this->option( 'entity_description' ) )
-		);
-
-		add_settings_field(
-			$this->option( 'entity_image_url' ),
-			__( 'Image URL', 'botamp' ),
-			array( $this, 'entity_image_url_cb' ),
-			$this->plugin_name,
-			$this->option( 'entity' ),
-			array( 'label_for' => $this->option( 'entity_image_url' ) )
-		);
-
-		add_settings_field(
-			$this->option( 'entity_title' ),
-			__( 'Title', 'botamp' ),
-			array( $this, 'entity_title_cb' ),
-			$this->plugin_name,
-			$this->option( 'entity' ),
-			array( 'label_for' => $this->option( 'entity_title' ) )
-		);
-
-		add_settings_field(
-			$this->option( 'entity_url' ),
-			__( 'URL', 'botamp' ),
-			array( $this, 'entity_url_cb' ),
-			$this->plugin_name,
-			$this->option( 'entity' ),
-			array( 'label_for' => $this->option( 'entity_url' ) )
-		);
-
 		register_setting( $this->plugin_name, $this->option( 'api_key' ) );
 		register_setting( $this->plugin_name, $this->option( 'post_type' ) );
-		register_setting( $this->plugin_name, $this->option( 'entity_description' ) );
-		register_setting( $this->plugin_name, $this->option( 'entity_image_url' ) );
-		register_setting( $this->plugin_name, $this->option( 'entity_title' ) );
-		register_setting( $this->plugin_name, $this->option( 'entity_url' ) );
 	}
 
 	public function general_cb() {
@@ -206,47 +130,104 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	}
 
 	public function post_type_cb() {
-		$post_type = $this->get_option( 'post_type' );
-		$html = '<input class="botamp-get-list-post-type" type="hidden" name="' . $this->option( 'post_type' ) . '" value="' . $post_type . '" />';
-		$html .= '<select class="botamp-post-type regular-list" >';
-		foreach ( get_post_types( '', 'objects' ) as $post_type ) {
-			$html .= "<option value='{$post_type->name}' > {$post_type->label} </option>";
+		$html = '<select class = "botamp-post-type regular-list" >';
+		foreach ( get_post_types( array("public" => true), 'objects' ) as $post_type ) {
+			$html .= "<option value = '{$post_type->name}'> {$post_type->label} </option>";
 		}
 		$html .= '</select>';
-		$html .= '<div class="botamp-display-checkbox"> </br><input class="post-type-validate" type="checkbox" /> <label>Add this post type and fields</label></div>';
-
 		echo $html;
 	}
 
-	public function entity_description_cb() {
-		echo $this->print_field_select( 'entity_description' );
-	}
+	public function entity_fields() {
+		$html = '<div class="botamp-content-mapping">';
+		foreach ( get_post_types( array("public" => true), 'objects' ) as $post_type ) {
+			$option_value = $this->get_option( 'post_type' )[$post_type->name];
+	        $html .= '<table class="form-table" id="botamp-form-table-'.$post_type->name.'"> <tr valign="top">
+	        	<th scope="row"><label for="'.$this->option( "post_type" ).'['.$post_type->name.'][description]">Description</label> </th>
+	        	<td>
+	        	<select name="'.$this->option( "post_type" ).'['.$post_type->name.'][description]" class = "regular-list">';
+	        		foreach ( $this->fields as $field ) {
+						if ( $option_value['description'] === $field ) {
+							$html .= "<option value = '$field' selected='true'>"
+							. $this->field_name( $field )
+							. '</option>';
+						} else {
+							$html .= "<option value = '$field'>"
+							. $this->field_name( $field )
+							. '</option>';
+						}
+					}
+			$html .= '</select>
+				</td>
+	        </tr>
+	        <tr valign="top">
+	        	<th scope="row"> <label for="'.$this->option( "post_type" ).'['.$post_type->name.'][image_url]">Image URL</label> </th>
+	        	<td>
+	        	<select name="'.$this->option( "post_type" ).'['.$post_type->name.'][image_url]" class = "regular-list">';
+	        		foreach ( [ '', 'post_thumbnail_url' ] as $field ) {
+						if ( $option_value['image_url'] === $field ) {
+							$html .= "<option value = '$field' selected='true'>"
+							. $this->field_name( $field )
+							. '</option>';
+						} else {
+							$html .= "<option value = '$field'>"
+							. $this->field_name( $field )
+							. '</option>';
+						}
+					}
+			$html .= '</select>
+	        	</td>
+	        </tr>
+	        <tr valign="top" >
+	        	<th scope="row"><h3>'.$post_type->label.'</h3></th>
+	        	<td></td>
+	        </tr>
+	        <tr valign="top">
+	        	<th scope="row"> <label for="' . $this->option( 'order_notifications' ) . '">Sync this post type</label> </th>
+	        	<td>
+	        	<input type="checkbox" name="'.$this->option( "post_type" ).'['.$post_type->name.'][valid]" value="enabled" ' .checked( 'enabled', $option_value['valid'], false ) . '/>
+	        	</td>
+	        </tr>
+	        <tr valign="top">
+	        	<th scope="row"> <label for="'.$this->option( "post_type" ).'['.$post_type->name.'][title]">Title</label> </th>
+	        	<td>
+	        	<select name="'.$this->option( "post_type" ).'['.$post_type->name.'][title]" class = "regular-list">';
+	        		foreach ( $this->fields as $field ) {
+						if ( $option_value['title'] === $field ) {
+							$html .= "<option value = '$field' selected='true'>"
+							. $this->field_name( $field )
+							. '</option>';
+						} else {
+							$html .= "<option value = '$field'>"
+							. $this->field_name( $field )
+							. '</option>';
+						}
+					}
+			$html .= '</select>
+	        	</td>
+	        </tr>
+	        <tr valign="top">
+	        	<th scope="row"> <label for="'.$this->option( "post_type" ).'['.$post_type->name.'][url]">URL</label> </th>
+	        	<td>
+	        	<select name="'.$this->option( "post_type" ).'['.$post_type->name.'][url]" class = "regular-list">';
+	        		foreach ( $this->fields as $field ) {
+						if ( $option_value['url'] === $field ) {
+							$html .= "<option value = '$field' selected='true'>"
+							. $this->field_name( $field )
+							. '</option>';
+						} else {
+							$html .= "<option value = '$field'>"
+							. $this->field_name( $field )
+							. '</option>';
+						}
+					}
+			$html .= '</select>
+	        	</td>
+	        </tr></table>';
 
-	public function entity_image_url_cb() {
-		$fields = [ '', 'post_thumbnail_url' ];
-
-		echo $this->print_field_select( 'entity_image_url', $fields );
-	}
-
-	public function entity_title_cb() {
-		echo $this->print_field_select( 'entity_title' );
-	}
-
-	public function entity_url_cb() {
-		echo $this->print_field_select( 'entity_url' );
-	}
-
-	private function print_field_select( $option, $fields = [] ) {
-		$retrive_field = $this->get_option( $option );
-		$fields = empty( $fields ) ? $this->fields : $fields;
-		$html = '<input class="botamp-get-list-fields" type="hidden" name="' . $this->option( $option ) . '" value=" ' . $retrive_field . ' " />';
-		$html .= '<select class="botamp-all-fields regular-list botamp-all-fields" >';
-		foreach ( $fields as $field ) {
-				$html .= "<option value = '$field'>"
-				. $this->field_name( $field )
-				. '</option>';
 		}
-		return $html;
+		$html .= '</div>';
+		echo $html;
 	}
 
 	private function field_name( $field ) {
