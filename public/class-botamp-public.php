@@ -98,7 +98,7 @@ class Botamp_Public {
 		$values = [ 'entity_type' => 'article' ];
 		$is_post_type = false;
 		foreach ( $this->get_list_post_type_validation() as $post_type => $entity_fields ) {
-			if ( $post_type == get_post_type( $post_id ) ) {
+			if ( $post_type === get_post_type( $post_id ) ) {
 				$is_post_type = true;
 				$is_entity_fields = $entity_fields;
 			}
@@ -138,7 +138,7 @@ class Botamp_Public {
 		$list_post_type_valid = [];
 		$list_entity_field_valid = [];
 		foreach ( $this->get_option( 'post_type' ) as $post_type => $entity_fields ) {
-			if ( $entity_fields[ "valid" ] == "enabled" ) {
+			if ( $entity_fields['valid'] === 'enabled' ) {
 				array_push( $list_post_type_valid, $post_type );
 				array_push( $list_entity_field_valid, $entity_fields );
 			}
@@ -149,7 +149,7 @@ class Botamp_Public {
 	private function verified_this_post_type( $post_id ) {
 		$is_post_type = false;
 		foreach ( $this->get_list_post_type_validation() as $post_type => $entity_fields ) {
-			if ( $post_type == get_post_type( $post_id ) ) {
+			if ( $post_type === get_post_type( $post_id ) ) {
 				$is_post_type = true;
 			}
 		}
