@@ -140,8 +140,12 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	public function entity_fields() {
 		$html = '<div class="botamp-content-mapping">';
 		foreach ( get_post_types( array( 'public' => true ), 'objects' ) as $post_type ) {
-			$option_value = $this->get_option( 'post_type' )[ $post_type->name ];
-	        $html .= '<table class="form-table" id="botamp-form-table-' . $post_type->name . '"> <tr valign="top">
+			if ( is_array($this->get_option( 'post_type' ))) {
+				$option_value = $this->get_option( 'post_type' )[ $post_type->name ];
+			} else {
+				$option_value = [];
+			}
+			$html .= '<table class="form-table" id="botamp-form-table-' . $post_type->name . '"> <tr valign="top">
 	        	<th scope="row"><label for="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]">Description</label> </th>
 	        	<td> <select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]" class = "regular-list">';
 			foreach ( $this->fields as $field ) {
