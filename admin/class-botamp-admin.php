@@ -140,7 +140,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 	public function entity_fields() {
 		$html = '<div class="botamp-content-mapping">';
 		foreach ( get_post_types( array( 'public' => true ), 'objects' ) as $post_type ) {
-			if ( is_array($this->get_option( 'post_type' ))) {
+			if ( is_array( $this->get_option( 'post_type' ) ) ) {
 				$option_value = $this->get_option( 'post_type' )[ $post_type->name ];
 			} else {
 				$option_value = [];
