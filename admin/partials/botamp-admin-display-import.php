@@ -7,8 +7,8 @@ foreach ( $this->get_option( 'post_type' ) as $post_type => $entity_fields ) {
 		array_push( $all_posts_valid, $wpdb->get_col( $wpdb->prepare( "SELECT $wpdb->posts.ID FROM $wpdb->posts WHERE $wpdb->posts.post_type = %s AND $wpdb->posts.post_status = 'publish' AND $wpdb->posts.ID NOT IN ( SELECT $wpdb->postmeta.post_id FROM $wpdb->postmetaWHERE  $wpdb->postmeta.meta_key = 'entity_id' )", $post_type ) ) );
 	}
 }
-foreach( $all_posts_valid as $key => $content ) {
-	for( $i = 0; $i < count( $content ); $i++ ) {
+foreach ( $all_posts_valid as $key => $content ) {
+	for ( $i = 0; $i < count( $content ); $i++ ) {
 		array_push( $posts, $content[ $i ] );
 	}
 }
