@@ -43,9 +43,7 @@
 	        	<td><?php $woocommerce_admin->order_notifications_cb(); ?></td>
 	        </tr>
 	    </table>
-	    <h2>Content Mapping</h2>
 		<?php
-			$this->entity_cb();
 			$this->entity_fields();
 		?>
 	    <?php submit_button(); ?>

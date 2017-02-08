@@ -118,12 +118,6 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 			. '</p>';
 	}
 
-	public function entity_cb() {
-		echo '<p>'
-			. __( 'Choose the post fields your bot will use to respond to your customers.', 'botamp' )
-			. '</p>';
-	}
-
 	public function api_key_cb() {
 		$api_key = $this->get_option( 'api_key' );
 		echo '<input type="text" name="' . $this->option( 'api_key' ) . '" value="' . $api_key . '" class="regular-text"> ';
@@ -145,7 +139,7 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 			} else {
 				$option_value = [];
 			}
-			$html .= '<table class="form-table" id="botamp-form-table-' . $post_type->name . '"> <tr valign="top">
+			$html .= '<h2 id="botamp-form-post-type-' . $post_type->name . '">' . $post_type->label . '</h2><table class="form-table" id="botamp-form-table-' . $post_type->name . '"> <tr valign="top">
 	        	<th scope="row"><label for="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]">Description</label> </th>
 	        	<td> <select name="' . $this->option( 'post_type' ) . '[' . $post_type->name . '][description]" class = "regular-list">';
 			foreach ( $this->fields as $field ) {
@@ -179,11 +173,6 @@ Please provide a valid API key on the <a href="%s">settings page</a>.', 'botamp'
 			}
 			$html .= '</select>
 	    </td>
-	        </tr>
-	        <tr valign="top" >
-	        	<th scope="row"><h3>' . $post_type->label . '</h3></th>
-	        	<td></td>
-	        </tr>
 	        <tr valign="top">
 	        	<th scope="row"> <label for="' . $this->option( 'order_notifications' ) . '">Sync this post type</label> </th>
 	        	<td>

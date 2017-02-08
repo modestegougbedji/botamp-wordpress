@@ -6,9 +6,9 @@
 			show_fields_this_post_type();
 		}).change();
 		function show_fields_this_post_type() {
-			$( 'div.botamp-content-mapping' ).find( 'table' ).css( "display", "none" );
+			$( 'div.botamp-content-mapping' ).find( 'table, h2' ).css( "display", "none" );
 			$( ".botamp-post-type" ).each( function() {
-				$( 'div.botamp-content-mapping' ).find( '#botamp-form-table-' + this.value ).css( "display" , "block" );
+				$( 'div.botamp-content-mapping' ).find( '#botamp-form-post-type-'+this.value+', #botamp-form-table-'+this.value ).css( "display" , "block" );
 	    	});
 		}
 	});
